@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, Text } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withDecay } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { DecayConfig } from 'react-native-reanimated/lib/typescript/reanimated2/animation/decay/utils';
@@ -11,6 +11,8 @@ interface EllipticalViewProps {
     children: React.ReactNode;
     radiusX: number;
     radiusY: number;
+    centralComponent?: React.ReactNode;
+    rotateCentralComponent?: boolean;
     childContainerStyle?: any;
     animationConfig?: DecayConfig;
 }
@@ -22,7 +24,7 @@ const defaultAnimationConfig = {
 
 
 const EllipticalView = (props: EllipticalViewProps) => {
-    const { radiusX, radiusY, childContainerStyle = styles.child, animationConfig=defaultAnimationConfig } = props;
+    const { radiusX, radiusY, childContainerStyle = null, rotateCentralComponent=false, animationConfig = defaultAnimationConfig } = props;
 
     const angle = useSharedValue(0);
     const initialTouchAngle = useSharedValue(0);
@@ -68,12 +70,12 @@ const EllipticalView = (props: EllipticalViewProps) => {
 
                 let velocity = (Math.abs(velocityX) + Math.abs(velocityY)) / 200;
                 console.log('velocity: ', velocity);
-                angle.value = withDecay({ velocity: velocity * direction,  ...animationConfig });
+                angle.value = withDecay({ velocity: velocity * direction, ...animationConfig });
             });
     }
 
-    const createStyle = (theta:number, sizeX: number, sizeY: number) => {
-        const animatedStyle =  useAnimatedStyle(() => {
+    const createStyle = (theta: number, sizeX: number, sizeY: number) => {
+        const animatedStyle = useAnimatedStyle(() => {
             const x = centerX + radiusX * Math.cos(theta + angle.value) - sizeX / 2;
             const y = centerY + radiusY * Math.sin(theta + angle.value) - sizeY / 2;
             return {
@@ -84,6 +86,12 @@ const EllipticalView = (props: EllipticalViewProps) => {
         });
         return [animatedStyle, childContainerStyle];
     }
+
+    const rotatedCentralStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ rotate: angle.value + 'rad' }],
+        };
+    });
 
     return (
         <View style={styles.container}
@@ -98,10 +106,13 @@ const EllipticalView = (props: EllipticalViewProps) => {
                 );
             }}
         >
+            <Animated.View style={rotateCentralComponent && rotatedCentralStyle}>
+                {props.centralComponent && props.centralComponent}
+            </Animated.View>
             {React.Children.map(props.children, (child, index) => {
                 const theta = (2 * Math.PI * index) / numberOfChildren;
                 return (
-                    <Item theta={theta} index={index} createStyle={createStyle} createPanGesture={createPanGesture}  child={child} />
+                    <Item theta={theta} index={index} createStyle={createStyle} createPanGesture={createPanGesture} child={child} />
                 );
             })}
         </View>
@@ -110,25 +121,24 @@ const EllipticalView = (props: EllipticalViewProps) => {
 
 
 
-const Item = ({theta, index, createStyle, createPanGesture, child }:
-    { theta:number, index: number, createStyle: (theta: number, sizeX:number, sizeY:number) => any, createPanGesture: (theta: number, sizeX:number, sizeY:number) => any, child: React.ReactNode }) => {
+const Item = ({ theta, index, createStyle, createPanGesture, child }:
+    { theta: number, index: number, createStyle: (theta: number, sizeX: number, sizeY: number) => any, createPanGesture: (theta: number, sizeX: number, sizeY: number) => any, child: React.ReactNode }) => {
 
     const [sizeX, setSizeX] = React.useState(0);
     const [sizeY, setSizeY] = React.useState(0);
-
     console.log('sizeX: ', sizeX);
     console.log('sizeY: ', sizeY);
 
-    const panGesture = createPanGesture(theta, sizeX,sizeY);
+    const panGesture = createPanGesture(theta, sizeX, sizeY);
     const style = createStyle(theta, sizeX, sizeY);
 
     return (
         <GestureDetector gesture={panGesture} key={index}>
             <Animated.View style={style}
-            onLayout={(event) => {
-                setSizeX(event.nativeEvent.layout.width);
-                setSizeY(event.nativeEvent.layout.height);
-            }}
+                onLayout={(event) => {
+                    setSizeX(event.nativeEvent.layout.width);
+                    setSizeY(event.nativeEvent.layout.height);
+                }}
             >
                 {child}
             </Animated.View>
@@ -142,14 +152,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'lightgray',
-    },
-    child: {
-        width: 100,
-        height: 100,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'lightblue',
-        borderRadius: 50,
     },
 });
 
