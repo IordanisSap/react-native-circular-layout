@@ -45,7 +45,7 @@ export default function App() {
           {/* <ScrollView>
             <View style={{ width: 400, height: 400, }}/> */}
           <View style={{ width: 400, height: 600, }}>
-            <EllipticalView radiusX={radiusX} radiusY={radiusY} animationConfig={{ deceleration: 0.9995 }} centralComponent={<CentralComponent onPress={onCentralPress} />} panEnabled={scrollEnabled}>
+            <EllipticalView radiusX={radiusX} radiusY={radiusY} animationConfig={{ deceleration: 0.9995 }} centralComponent={<CentralComponent onPress={onCentralPress} />} panEnabled={scrollEnabled} index={-2} onSnap={(index) => console.log(index)}>
               <ChildComponent style={childStyle} src={require('./assets/burger.png')} />
               <ChildComponent style={childStyle} src={require('./assets/pizza.png')} />
               <ChildComponent style={childStyle} src={require('./assets/cocktail.png')} />

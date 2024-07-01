@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Text } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withDecay, SharedValue } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withDecay, SharedValue, withSequence, withTiming, runOnJS } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { DecayConfig } from 'react-native-reanimated/lib/typescript/reanimated2/animation/decay/utils';
 
@@ -16,6 +16,9 @@ interface EllipticalViewProps {
     childContainerStyle?: any;
     animationConfig?: DecayConfig;
     panEnabled?: boolean;
+    index?: number;
+    snappingEnabled?: boolean;
+    onSnap?: (index: number) => void;
 }
 
 
@@ -25,7 +28,7 @@ const defaultAnimationConfig = {
 
 
 const EllipticalView = (props: EllipticalViewProps) => {
-    const { radiusX, radiusY, childContainerStyle = null, rotateCentralComponent = false, animationConfig = defaultAnimationConfig ,panEnabled: scrollEnabled=true } = props;
+    const { radiusX, radiusY, childContainerStyle = null, rotateCentralComponent = false, animationConfig = defaultAnimationConfig, panEnabled: scrollEnabled = true, snappingEnabled = true, index = 0, onSnap: onPick } = props;
 
     const angle = useSharedValue(0);
     const initialTouchAngle = useSharedValue(0);
@@ -37,6 +40,14 @@ const EllipticalView = (props: EllipticalViewProps) => {
 
     const numberOfChildren = React.Children.count(props.children);
 
+    const snapPoints = React.useMemo(() => {
+        const points = [];
+        for (let i = 0; i < numberOfChildren; i++) {
+            points.push((2 * Math.PI * i) / numberOfChildren);
+        }
+        return points;
+    }, [numberOfChildren]);
+
     const createPanGesture = (theta: number, sizeX: number, sizeY: number) => {
         return Gesture.Pan()
             .onStart((e) => {
@@ -46,7 +57,7 @@ const EllipticalView = (props: EllipticalViewProps) => {
             })
             .onUpdate((e) => {
                 if (!scrollEnabled) return;
-                
+
                 const radiusXValue = typeof radiusX === 'number' ? radiusX : radiusX.value;
                 const radiusYValue = typeof radiusY === 'number' ? radiusY : radiusY.value;
                 const elementX = centerX + radiusXValue * Math.cos(theta + angle.value) - sizeX / 2;
@@ -77,9 +88,35 @@ const EllipticalView = (props: EllipticalViewProps) => {
 
                 let velocity = (Math.abs(velocityX) + Math.abs(velocityY)) / 200;
                 console.log('velocity: ', velocity);
-                angle.value = withDecay({ velocity: velocity * direction, ...animationConfig });
+
+                if (!snappingEnabled) {
+                    angle.value = withDecay({ velocity: velocity * direction, ...animationConfig });
+                } else {
+                    angle.value = withDecay({ velocity: velocity * direction, ...animationConfig }, () => {
+                        const distances = snapPoints.map(point => {
+                            const distanceToFullRotation = (angle.value - point) % (2 * Math.PI);
+                            return Math.abs(distanceToFullRotation) > Math.PI 
+                                ? 2 * Math.PI - Math.abs(distanceToFullRotation) 
+                                : Math.abs(distanceToFullRotation);
+                        });
+                        
+                        const minDistance = Math.min(...distances);
+                        const closestSnapIndex = distances.indexOf(minDistance);
+                        
+                        console.log('closestSnapIndex: ', closestSnapIndex);
+                        // Calculate the actual snap point
+                        const closestSnapPoint = snapPoints[closestSnapIndex];
+                        const actualSnapPoint = closestSnapPoint + Math.round((angle.value - closestSnapPoint) / (2 * Math.PI)) * 2 * Math.PI;
+                        angle.value =  withTiming(actualSnapPoint, { duration: 500 }, () => {
+                            if (onPick) {
+                                runOnJS(onPick)(closestSnapIndex);
+                            }
+                        });
+                    });
+                }
             });
     }
+
 
     const createStyle = (theta: number, sizeX: number, sizeY: number) => {
         const animatedStyle = useAnimatedStyle(() => {
@@ -116,10 +153,11 @@ const EllipticalView = (props: EllipticalViewProps) => {
                 );
             }}
         >
-            {React.Children.map(props.children, (child, index) => {
-                const theta = (2 * Math.PI * index) / numberOfChildren;
+            {React.Children.map(props.children, (child, ind) => {
+                const theta = (2 * Math.PI * ind) / numberOfChildren + Math.PI * 3 / 2 + (index * Math.PI * 2 / numberOfChildren);
+                console.log('theta: ', theta);
                 return (
-                    <Item theta={theta} index={index} createStyle={createStyle} createPanGesture={createPanGesture} child={child} />
+                    <Item theta={theta} index={ind} createStyle={createStyle} createPanGesture={createPanGesture} child={child} />
                 );
             })}
             <Animated.View style={rotateCentralComponent && rotatedCentralStyle}>
@@ -136,8 +174,6 @@ const Item = ({ theta, index, createStyle, createPanGesture, child }:
 
     const [sizeX, setSizeX] = React.useState(0);
     const [sizeY, setSizeY] = React.useState(0);
-    console.log('sizeX: ', sizeX);
-    console.log('sizeY: ', sizeY);
 
     const panGesture = createPanGesture(theta, sizeX, sizeY);
     const style = createStyle(theta, sizeX, sizeY);
