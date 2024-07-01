@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Text } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withDecay } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withDecay, SharedValue } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { DecayConfig } from 'react-native-reanimated/lib/typescript/reanimated2/animation/decay/utils';
 
@@ -9,12 +9,13 @@ const max_speed = 100;
 
 interface EllipticalViewProps {
     children: React.ReactNode;
-    radiusX: number;
-    radiusY: number;
+    radiusX: number | SharedValue<number>;
+    radiusY: number | SharedValue<number>;
     centralComponent?: React.ReactNode;
     rotateCentralComponent?: boolean;
     childContainerStyle?: any;
     animationConfig?: DecayConfig;
+    panEnabled?: boolean;
 }
 
 
@@ -24,7 +25,7 @@ const defaultAnimationConfig = {
 
 
 const EllipticalView = (props: EllipticalViewProps) => {
-    const { radiusX, radiusY, childContainerStyle = null, rotateCentralComponent=false, animationConfig = defaultAnimationConfig } = props;
+    const { radiusX, radiusY, childContainerStyle = null, rotateCentralComponent = false, animationConfig = defaultAnimationConfig ,panEnabled: scrollEnabled=true } = props;
 
     const angle = useSharedValue(0);
     const initialTouchAngle = useSharedValue(0);
@@ -44,8 +45,12 @@ const EllipticalView = (props: EllipticalViewProps) => {
                 initialTouchAngle.value = Math.atan2(touchY, touchX) - angle.value;
             })
             .onUpdate((e) => {
-                const elementX = centerX + radiusX * Math.cos(theta + angle.value) - sizeX / 2;
-                const elementY = centerY + radiusY * Math.sin(theta + angle.value) - sizeY / 2;
+                if (!scrollEnabled) return;
+                
+                const radiusXValue = typeof radiusX === 'number' ? radiusX : radiusX.value;
+                const radiusYValue = typeof radiusY === 'number' ? radiusY : radiusY.value;
+                const elementX = centerX + radiusXValue * Math.cos(theta + angle.value) - sizeX / 2;
+                const elementY = centerY + radiusYValue * Math.sin(theta + angle.value) - sizeY / 2;
 
                 const touchX = elementX + e.x;
                 const touchY = elementY + e.y;
@@ -55,6 +60,8 @@ const EllipticalView = (props: EllipticalViewProps) => {
                 angle.value = currentTouchAngle - initialTouchAngle.value;
             })
             .onEnd((e) => {
+                if (!scrollEnabled) return;
+
                 const velocityX = e.velocityX;
                 const velocityY = e.velocityY;
 
@@ -76,8 +83,11 @@ const EllipticalView = (props: EllipticalViewProps) => {
 
     const createStyle = (theta: number, sizeX: number, sizeY: number) => {
         const animatedStyle = useAnimatedStyle(() => {
-            const x = centerX + radiusX * Math.cos(theta + angle.value) - sizeX / 2;
-            const y = centerY + radiusY * Math.sin(theta + angle.value) - sizeY / 2;
+            const radiusXValue = typeof radiusX === 'number' ? radiusX : radiusX.value;
+            const radiusYValue = typeof radiusY === 'number' ? radiusY : radiusY.value;
+
+            const x = centerX + radiusXValue * Math.cos(theta + angle.value) - sizeX / 2;
+            const y = centerY + radiusYValue * Math.sin(theta + angle.value) - sizeY / 2;
             return {
                 position: 'absolute',
                 left: x,
@@ -106,15 +116,15 @@ const EllipticalView = (props: EllipticalViewProps) => {
                 );
             }}
         >
-            <Animated.View style={rotateCentralComponent && rotatedCentralStyle}>
-                {props.centralComponent && props.centralComponent}
-            </Animated.View>
             {React.Children.map(props.children, (child, index) => {
                 const theta = (2 * Math.PI * index) / numberOfChildren;
                 return (
                     <Item theta={theta} index={index} createStyle={createStyle} createPanGesture={createPanGesture} child={child} />
                 );
             })}
+            <Animated.View style={rotateCentralComponent && rotatedCentralStyle}>
+                {props.centralComponent && props.centralComponent}
+            </Animated.View>
         </View>
     );
 };
@@ -151,7 +161,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'lightgray',
     },
 });
 
