@@ -54,12 +54,19 @@ export interface EllipticalViewProps {
     onSnap?: (index: number) => void;
 
     /**
+     * The angle at which the view should snap to the nearest child
+     * 
+     * Default: SnapAngle.Top
+     */
+
+    snapAngle?: SnapAngle | number;
+    /**
      * Whether the user can pan the view / rotate using touch
      * 
      * Default: true
      */
 
-    panEnabled?: boolean;
+    gesturesEnabled?: boolean;
 
     /** 
      * Whether the central component should rotate with the rest of the components

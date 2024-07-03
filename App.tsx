@@ -38,6 +38,15 @@ export default function App() {
     }
   }
 
+  const childComponents = [
+    { src: require('./assets/burger.png') },
+    { src: require('./assets/pizza.png') },
+    { src: require('./assets/cocktail.png') },
+    { src: require('./assets/ice-cream.png') },
+    { src: require('./assets/cup.png') }
+  ];
+
+  console.log('index', index);
 
   return (
     <View style={styles.container}>
@@ -46,13 +55,15 @@ export default function App() {
           {/* <ScrollView>
             <View style={{ width: 400, height: 400, }}/> */}
           <View style={{ width: 400, height: 600, }}>
-            <EllipticalView radiusX={radiusX} radiusY={radiusY} animationConfig={{ deceleration: 0.9995 }} centralComponent={<CentralComponent onPress={onCentralPress} />} panEnabled={scrollEnabled} index={1} onSnap={(index) => console.log(index)}>
-              <ChildComponent style={childStyle} src={require('./assets/burger.png')} />
-              <ChildComponent style={childStyle} src={require('./assets/pizza.png')} />
-              <ChildComponent style={childStyle} src={require('./assets/cocktail.png')} />
-              <ChildComponent style={childStyle} src={require('./assets/ice-cream.png')} />
-              <ChildComponent style={childStyle} src={require('./assets/cup.png')} />
-
+            <EllipticalView radiusX={radiusX} radiusY={radiusY} animationConfig={{ deceleration: 0.9995 }} centralComponent={<CentralComponent onPress={onCentralPress} />} gesturesEnabled={scrollEnabled} index={index} onSnap={(index) => setIndex(index)}>
+              {childComponents.map((item, ind) => (
+                <ChildComponent
+                  key={ind}
+                  style={childStyle}
+                  src={item.src}
+                  selected={index === ind}
+                />
+              ))}
             </EllipticalView>
           </View>
           {/* </ScrollView> */}
@@ -68,10 +79,10 @@ const CentralComponent = ({ onPress }: { onPress: () => void }) => (
   </AnimatedPressable>
 );
 
-const ChildComponent = ({ style, src }: { style?: any, src: ImageSourcePropType }) => (
-  <AnimatedPressable style={[styles.child, style]} >
-    <ImageBackground source={require('./assets/bubble.png')} style={styles.child}>
-      <Image source={src} style={{ width: 45, height: 45 }} resizeMode='contain'/>
+const ChildComponent = ({ style, src, selected }: { style?: any, src: ImageSourcePropType, selected: boolean }) => (
+  <AnimatedPressable style={[style]} >
+    <ImageBackground source={require('./assets/bubble.png')} style={[styles.child,selected && styles.childBig]}>
+      <Image source={src} style={{ width: 45, height: 45 }} resizeMode='contain' />
     </ImageBackground >
   </AnimatedPressable>
 );
@@ -100,5 +111,9 @@ const styles = StyleSheet.create({
     height: 90,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  childBig: {
+    width: 130,
+    height: 130,
   },
 });
