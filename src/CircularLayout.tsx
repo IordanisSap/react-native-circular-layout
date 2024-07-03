@@ -3,23 +3,11 @@ import { View, StyleSheet, Dimensions, Text } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withDecay, SharedValue, withSequence, withTiming, runOnJS } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { DecayConfig } from 'react-native-reanimated/lib/typescript/reanimated2/animation/decay/utils';
-
+import { EllipticalViewProps } from './types';
 
 const max_speed = 100;
 
-interface EllipticalViewProps {
-    children: React.ReactNode;
-    radiusX: number | SharedValue<number>;
-    radiusY: number | SharedValue<number>;
-    centralComponent?: React.ReactNode;
-    rotateCentralComponent?: boolean;
-    childContainerStyle?: any;
-    animationConfig?: DecayConfig;
-    panEnabled?: boolean;
-    index?: number;
-    snappingEnabled?: boolean;
-    onSnap?: (index: number) => void;
-}
+
 
 
 const defaultAnimationConfig = {
@@ -28,7 +16,7 @@ const defaultAnimationConfig = {
 
 
 const EllipticalView = (props: EllipticalViewProps) => {
-    const { radiusX, radiusY, childContainerStyle = null, rotateCentralComponent = false, animationConfig = defaultAnimationConfig, panEnabled: scrollEnabled = true, snappingEnabled = true, index = 0, onSnap: onPick } = props;
+    const { radiusX, radiusY,centralComponent = null, rotateCentralComponent = false, snappingEnabled = true, index = 0, onSnap: onPick, panEnabled: scrollEnabled = true, animationConfig = defaultAnimationConfig, childContainerStyle = null, } = props;
 
     const angle = useSharedValue(0);
     const initialTouchAngle = useSharedValue(0);
@@ -166,13 +154,13 @@ const EllipticalView = (props: EllipticalViewProps) => {
                 );
             })}
             <Animated.View style={rotateCentralComponent && rotatedCentralStyle}>
-                {props.centralComponent && props.centralComponent}
+                {centralComponent}
             </Animated.View>
         </View>
     );
 };
 
-const Children = ({ children, activeIndex }: { children: React.ReactNode, activeIndex:number }) => {
+const Children = ({ children, activeIndex }: { children: React.ReactNode, activeIndex: number }) => {
     const numberOfChildren = React.Children.count(children);
     return <>
         {React.Children.map(children, (child, ind) => {
