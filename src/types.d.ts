@@ -74,6 +74,19 @@ export interface EllipticalViewProps {
 
     gesturesEnabled?: boolean;
 
+
+    /**
+     * The callback that is called when the user starts a gesture
+     */
+
+    onGestureStart?: () => void;
+
+    /**
+     * The callback that is called when the user ends a gesture
+     */
+
+    onGestureEnd?: () => void;
+
     /** 
      * Whether the central component should rotate with the rest of the components
      * 
@@ -89,11 +102,18 @@ export interface EllipticalViewProps {
     childContainerStyle?: any;
 
     /**
+     * The duration of the snapping animation
+     */
+
+    snapDuration?: number;
+
+    /**
      * The configuration for the decay animation
      * 
      * NOTE: deceleration values below 0.9 will cause the animation to stop almost immediately
      */
 
     animationConfig?: DecayConfig;
+
 
 }

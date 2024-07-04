@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Image, ImageBackground, ImageSourcePropType, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import EllipticalView from './src/CircularLayout';
 import { GestureHandlerRootView, TouchableOpacity } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useSharedValue, withDecay, withRepeat, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle, useSharedValue, withDecay, withRepeat, withSpring, withTiming } from 'react-native-reanimated';
 import { useEffect, useState } from 'react';
 // import CircularView from './src/CircularLayout2';
 
@@ -24,6 +24,7 @@ export default function App() {
   });
 
   const onCentralPress = () => {
+    setIndex((childComponents.length + index + 1) % childComponents.length);
     if (isExpanding.value) {
       radiusX.value = withTiming(0, { duration: 800, })
       radiusY.value = withTiming(0, { duration: 800, })
@@ -46,7 +47,8 @@ export default function App() {
     { src: require('./assets/cup.png') }
   ];
 
-  console.log('index', index);
+  const colors = ['#D2691E', '#FFA500', '#FF69B4', '#FFB6C1', '#8B4513'];
+
 
   return (
     <View style={styles.container}>
@@ -55,11 +57,21 @@ export default function App() {
           {/* <ScrollView>
             <View style={{ width: 400, height: 400, }}/> */}
           <View style={{ width: 400, height: 600, }}>
-            <EllipticalView radiusX={radiusX} radiusY={radiusY} animationConfig={{ deceleration: 0.9995 }} centralComponent={<CentralComponent onPress={onCentralPress} />} gesturesEnabled={scrollEnabled} index={index} onSnap={(index) => setIndex(index)}>
+            <EllipticalView
+              radiusX={radiusX}
+              radiusY={radiusY}
+              animationConfig={{ deceleration: 0.9995 }}
+              centralComponent={<CentralComponent onPress={onCentralPress} />}
+              gesturesEnabled={scrollEnabled}
+              index={index} onSnapStart={(index) => setIndex(index)}
+              onGestureStart={() => setIndex(-1)}
+              onGestureEnd={() => console.log('Gesture End')}
+            >
               {childComponents.map((item, ind) => (
                 <ChildComponent
                   key={ind}
                   style={childStyle}
+                  color={colors[ind]}
                   src={item.src}
                   selected={index === ind}
                 />
@@ -79,13 +91,34 @@ const CentralComponent = ({ onPress }: { onPress: () => void }) => (
   </AnimatedPressable>
 );
 
-const ChildComponent = ({ style, src, selected }: { style?: any, src: ImageSourcePropType, selected: boolean }) => (
-  <AnimatedPressable style={[style]} >
-    <ImageBackground source={require('./assets/bubble.png')} style={[styles.child,selected && styles.childBig]}>
-      <Image source={src} style={{ width: 45, height: 45 }} resizeMode='contain' />
-    </ImageBackground >
-  </AnimatedPressable>
-);
+const ChildComponent = ({ style, src, selected, color }: { style?: any, src: ImageSourcePropType, selected: boolean, color: any }) => {
+
+  const sizeAnim = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: sizeAnim.value }],
+      shadowColor: selected ? 'gray' : 'transparent',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: selected ? 0.75 : 0,
+      shadowRadius: 5,
+      elevation: 2,
+    }
+  });
+
+  useEffect(() => {
+    sizeAnim.value = withSpring(selected ? 1.4 : 1, { damping: 10, stiffness: 100 })
+  }, [selected]);
+
+  return (
+    <AnimatedPressable style={[style, animatedStyle, { backgroundColor: color, padding: 15, borderRadius: 40 }]} >
+      <Image source={src} style={{ width: 40, height: 40, }} resizeMode='contain' />
+    </AnimatedPressable>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {

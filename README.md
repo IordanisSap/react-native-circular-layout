@@ -49,3 +49,27 @@ yarn add @iordanissap/react-native-circular-layout
 
 
 ## Usage
+
+
+
+
+## Props
+
+| Prop Name              | Type                                            | Default           | Description                                                                                         |
+|------------------------|-------------------------------------------------|-------------------|-----------------------------------------------------------------------------------------------------|
+| `children(required)`             | `React.ReactNode`                               | -               | The children to be displayed in the circular layout                                                 |
+| `radiusX(required)`              | `number` \| `SharedValue<number>`               | -               | The radius of the ellipse in the x direction. Can be a number or a shared value                     |
+| `radiusY(required)`              | `number` \| `SharedValue<number>`               | -               | The radius of the ellipse in the y direction. Can be a number or a shared value                     |
+| `centralComponent`     | `React.ReactNode`                               | `null`               | The central component to be displayed in the center of the circle/ellipse                           |
+| `index`                | `number`                                        | `0`               | The index of the child that is currently snapped to the top.                                        |
+| `snappingEnabled`      | `boolean`                                       | `true`           | Whether the view should snap to the nearest child                                                   |
+| `onSnap`               | `(index: number) => void`                       | -               | The callback that is called when the view snaps to a child. Called when the animation ends.         |
+| `onSnapStart`          | `(index: number) => void`                       | -               | The callback that is called when the snapping animation starts                                      |
+| `snapAngle`            | `SnapAngle` \| `number`                         | `SnapAngle.Top`   | The angle at which the view should snap to the nearest child                                        |
+| `gesturesEnabled`      | `boolean`                                       | `true`            | Whether the user can pan the view / rotate using touch                                              |
+| `onGestureStart`       | `() => void`                                    | -               | The callback that is called when the user starts a gesture                                          |
+| `onGestureEnd`         | `() => void`                                    | -               | The callback that is called when the user ends a gesture                                            |
+| `rotateCentralComponent`| `boolean`                                      | `false`           | Whether the central component should rotate with the rest of the components                         |
+| `childContainerStyle`  | `any`                                           | -               | The style of the container for the children                                                         |
+| `animationConfig`      | `DecayConfig`                                   | -               | The configuration for the decay animation. Note: deceleration values below 0.9 will cause the animation to stop almost immediately. |
+
