@@ -48,11 +48,17 @@ export interface EllipticalViewProps {
     snappingEnabled?: boolean;
 
     /**
-     * The callback that is called when the view snaps to a child
+     * The callback that is called when the view snaps to a child. Called when the animation ends.
      */
 
     onSnap?: (index: number) => void;
 
+
+    /**
+     * The callback that is called when the snapping animation starts
+     */
+
+    onSnapStart?: (index: number) => void;
     /**
      * The angle at which the view should snap to the nearest child
      * 

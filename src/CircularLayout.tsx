@@ -12,7 +12,7 @@ const defaultAnimationConfig = {
 
 
 const EllipticalView = (props: EllipticalViewProps) => {
-    const { radiusX, radiusY, centralComponent = null, rotateCentralComponent = false, snappingEnabled = true, index = 0, onSnap: onPick, snapAngle = SnapAngle.TOP, gesturesEnabled: scrollEnabled = true, animationConfig = defaultAnimationConfig, childContainerStyle = null, } = props;
+    const { radiusX, radiusY, centralComponent = null, rotateCentralComponent = false, snappingEnabled = true, index = 0, onSnap, onSnapStart, snapAngle = SnapAngle.TOP, gesturesEnabled: scrollEnabled = true, animationConfig = defaultAnimationConfig, childContainerStyle = null, } = props;
 
     const angle = useSharedValue(snapAngle);
     const initialTouchAngle = useSharedValue(0);
@@ -60,8 +60,8 @@ const EllipticalView = (props: EllipticalViewProps) => {
                 angle.value = currentTouchAngle - initialTouchAngle.value;
             })
             .onEnd((e) => {
+                onSnapStart && runOnJS(onSnapStart)(index);
                 if (!scrollEnabled) return;
-
                 const velocityX = e.velocityX;
                 const velocityY = e.velocityY;
                 const radiusXValue = typeof radiusX === 'number' ? radiusX : radiusX.value;
@@ -106,9 +106,9 @@ const EllipticalView = (props: EllipticalViewProps) => {
                         const closestSnapPoint = snapPoints[closestSnapIndex];
                         const actualSnapPoint = closestSnapPoint + Math.round((angle.value - closestSnapPoint) / (2 * Math.PI)) * 2 * Math.PI;
                         angle.value = withTiming(actualSnapPoint, { duration: 500 }, () => {
-                            if (onPick) {
+                            if (onSnap) {
                                 const returnedSnapIndex = closestSnapIndex ? snapPoints.length - closestSnapIndex : 0; //This is because the elements are placed clockwise but rotating clockwise reduces the angle
-                                runOnJS(onPick)(returnedSnapIndex);
+                                runOnJS(onSnap)(returnedSnapIndex);
                             }
                         });
                     });
