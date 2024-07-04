@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Image, ImageBackground, ImageSourcePropType, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
-import EllipticalView from './src/CircularLayout';
+import CircularView from './src/CircularLayout';
 import { GestureHandlerRootView, TouchableOpacity } from 'react-native-gesture-handler';
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withDecay, withRepeat, withSpring, withTiming } from 'react-native-reanimated';
 import { useEffect, useState } from 'react';
@@ -57,7 +57,7 @@ export default function App() {
           {/* <ScrollView>
             <View style={{ width: 400, height: 400, }}/> */}
           <View style={{ width: 400, height: 600, }}>
-            <EllipticalView
+            <CircularView
               radiusX={radiusX}
               radiusY={radiusY}
               animationConfig={{ deceleration: 0.9995 }}
@@ -76,7 +76,7 @@ export default function App() {
                   selected={index === ind}
                 />
               ))}
-            </EllipticalView>
+            </CircularView>
           </View>
           {/* </ScrollView> */}
         </SafeAreaView>

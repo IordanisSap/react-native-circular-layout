@@ -3,7 +3,7 @@ import { View, StyleSheet, Dimensions, Text, LayoutChangeEvent } from 'react-nat
 import Animated, { useSharedValue, useAnimatedStyle, withDecay, SharedValue, withSequence, withTiming, runOnJS } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { DecayConfig } from 'react-native-reanimated/lib/typescript/reanimated2/animation/decay/utils';
-import { EllipticalViewProps } from './types';
+import { CircleViewProps } from './types';
 import { SnapAngle } from './constants';
 
 const defaultAnimationConfig = {
@@ -11,7 +11,7 @@ const defaultAnimationConfig = {
 }
 
 
-const EllipticalView = (props: EllipticalViewProps) => {
+const CircularView = (props: CircleViewProps) => {
     const { radiusX, radiusY, centralComponent = null, rotateCentralComponent = false,
         snappingEnabled = true, index = 0, onSnap, onSnapStart, snapAngle = SnapAngle.TOP, snapDuration = 600,
         gesturesEnabled: scrollEnabled = true, animationConfig = defaultAnimationConfig,
@@ -224,4 +224,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default EllipticalView;
+export default CircularView;

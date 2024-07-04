@@ -4,7 +4,7 @@ import { DecayConfig } from 'react-native-reanimated/lib/typescript/reanimated2/
 
 
 
-export interface EllipticalViewProps {
+export interface CircleViewProps {
 
     /**
      * The children to be displayed in the circular layout

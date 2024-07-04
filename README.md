@@ -11,13 +11,9 @@ It supports touch gesture rotation, animations, and includes a variety of extra 
 ## Table of Contents
 - [Installation](#installation)
 - [Dependencies](#dependencies)
-- [Usage](#usage)
 - [Examples](#examples)
 - [API Reference](#api-reference)
-- [Customization](#customization)
-- [Contributing](#contributing)
 - [License](#license)
-- [Changelog](#changelog)
 
 ## Installation
 -------
@@ -47,11 +43,7 @@ yarn add @iordanissap/react-native-circular-layout
 }
 ```
 
-
-## Usage
-
-
-
+## Examples
 
 ## Props
 
