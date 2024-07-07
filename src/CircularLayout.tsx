@@ -1,8 +1,7 @@
-import React, { memo, useCallback, useEffect, useMemo } from 'react';
-import { View, StyleSheet, Dimensions, Text, LayoutChangeEvent } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withDecay, SharedValue, withSequence, withTiming, runOnJS } from 'react-native-reanimated';
+import React, { useEffect, useMemo } from 'react';
+import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withDecay, SharedValue, withTiming, runOnJS } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { DecayConfig } from 'react-native-reanimated/lib/typescript/reanimated2/animation/decay/utils';
 import { CircleViewProps } from './types';
 import { SnapAngle } from './constants';
 
@@ -33,7 +32,8 @@ const CircularView = (props: CircleViewProps) => {
     }, [numberOfChildren]);
 
 
-
+    console.log('rerendering', index);
+    
     const createPanGesture = (theta: number, sizeX: SharedValue<number>, sizeY: SharedValue<number>) => {
         return Gesture.Pan()
             .onStart((e) => {

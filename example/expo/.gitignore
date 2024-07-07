@@ -33,8 +33,3 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
-
-
-# example
-example/node_modules
-*.log

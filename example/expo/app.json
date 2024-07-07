@@ -1,11 +1,8 @@
 {
   "expo": {
-    "name": "react-native-circular-layout",
-    "slug": "react-native-circular-layout",
+    "name": "react-native-circular-layout-expo-example",
+    "slug": "react-native-circular-layout-expo-example",
     "version": "1.0.0",
-    "packagerOpts": {
-      "sourceExts": ["js", "json", "ts", "tsx", "jsx"]
-    },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

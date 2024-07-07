@@ -1,6 +1,23 @@
 {
-  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
-  }
+    "outDir": "./dist",
+    "module": "ES6",
+    "target": "ES5",
+    "lib": [
+      "ES6",
+      "DOM"
+    ],
+    "sourceMap": true,
+    "declaration": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "src/**/*",
+    "index.tsx"
+  ],
+  "extends": "expo/tsconfig.base"
 }
