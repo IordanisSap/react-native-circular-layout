@@ -9,9 +9,9 @@ It supports touch gesture rotation, animations, and includes a variety of extra 
 
 
 <div style="display: flex; flex-direction: row;">
-  <img src="./.github/resources/open_close.gif" alt="open_close" width="210"/>
-  <img src="./.github/resources/rotate_velocity.gif" alt="rotate_velocity" width="210"/>
-  <img src="./.github/resources/rotate.gif" alt="rotate" width="210"/>
+  <img src="https://raw.githubusercontent.com/IordanisSap/react-native-circular-layout/master/.github/resources/open_close.gif" alt="open_close" width="210"/>
+  <img src="https://raw.githubusercontent.com/IordanisSap/react-native-circular-layout/master/.github/resources/rotate_velocity.gif" alt="rotate_velocity" width="210"/>
+  <img src="https://raw.githubusercontent.com/IordanisSap/react-native-circular-layout/master/.github/resources/rotate.gif" alt="rotate" width="210"/>
 </div>
 
 ## Table of Contents
@@ -53,7 +53,7 @@ yarn add @iordanissap/react-native-circular-layout
 ## Examples
 
 Minimal example<br>
-<img src="./.github/resources/simple.gif" alt="rotate" width="210"/>
+<img src="https://raw.githubusercontent.com/IordanisSap/react-native-circular-layout/master/.github/resources/simple.gif" alt="rotate" width="210"/>
 
 ```
 import { SafeAreaView, View } from 'react-native';
