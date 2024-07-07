@@ -7,17 +7,17 @@ react-native-circular-layout
 A versatile React Native component that arranges its children in a circular or elliptical layout. <br>
 It supports touch gesture rotation, animations, and includes a variety of extra features.
 
-![open_close](./.github/resources/open_close.gif)
-![rotate](./.github/resources/rotate_velocity.gif)
-![rotate](./.github/resources/rotate.gif)
 
+
+<img src="./.github/resources/open_close.gif" alt="open_close" width="210"/>
+<img src="./.github/resources/rotate_velocity.gif" alt="rotate_velocity" width="210"/>
+<img src="./.github/resources/rotate.gif" alt="rotate" width="210"/>
 
 ## Table of Contents
 - [Installation](#installation)
 - [Dependencies](#dependencies)
 - [Examples](#examples)
-- [API Reference](#api-reference)
-- [License](#license)
+- [Props](#props)
 
 ## Installation
 -------
@@ -34,6 +34,10 @@ With yarn:
 yarn add @iordanissap/react-native-circular-layout
 ```
 
+IMPORTANT: This library uses react-native-gesture-handler. To ensure proper functionality, you need to wrap your app's root component with `GestureHandlerRootView`. 
+
+
+
 
 ## Dependencies
 -----------------
@@ -41,13 +45,49 @@ yarn add @iordanissap/react-native-circular-layout
 ``` json
 {
     "react": "18.2.0",
-    "react-native": "0.74.2",
+    "react-native": "0.74.3",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-reanimated": "~3.10.1"
 }
 ```
 
 ## Examples
+
+Minimal example<br>
+<img src="./.github/resources/simple.gif" alt="rotate" width="210"/>
+
+```
+import { SafeAreaView, View } from 'react-native';
+import CircularView from 'react-native-circular-layout';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+export default function Minimal() {
+
+    const colors = ['#D2691E', '#FFA500', '#FF69B4', '#FFB6C1', '#8B4513'];
+    return (
+        <View style={{flex:1, backgroundColor:'white'}}>
+            <GestureHandlerRootView>
+                <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
+                    <CircularView
+                        radiusX={120}
+                        radiusY={120}
+                        snappingEnabled={true}
+                    >
+                        {colors.map((color, index) => (
+                            <View key={index} style={{ width: 60, height: 60,
+                                  backgroundColor: color, borderRadius:20 }} />
+                        ))}
+                    </CircularView>
+                </SafeAreaView>
+            </GestureHandlerRootView>
+        </View >
+    );
+}
+
+```
+
+[More examples](./example/)
+
 
 ## Props
 
@@ -67,5 +107,7 @@ yarn add @iordanissap/react-native-circular-layout
 | `onGestureEnd`         | `() => void`                                    | -               | The callback that is called when the user ends a gesture                                            |
 | `rotateCentralComponent`| `boolean`                                      | `false`           | Whether the central component should rotate with the rest of the components                         |
 | `childContainerStyle`  | `any`                                           | -               | The style of the container for the children                                                         |
+| `snapDuration`         | `number`                                           | -               | The duration of the snapping animation in ms                                                       |
 | `animationConfig`      | `DecayConfig`                                   | -               | The configuration for the decay animation. Note: deceleration values below 0.9 will cause the animation to stop almost immediately. |
+
 

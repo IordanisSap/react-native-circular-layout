@@ -1,8 +1,6 @@
-import { Image, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import CircularView from 'react-native-circular-layout';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
-import { memo, useCallback, useMemo, useRef, useState } from 'react';
 
 
 export default function Minimal() {

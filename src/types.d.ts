@@ -48,14 +48,14 @@ export interface CircleViewProps {
     snappingEnabled?: boolean;
 
     /**
-     * The callback that is called when the view snaps to a child. Called when the animation ends.
+     * Called when the view snaps to a child. Called when the animation ends.
      */
 
     onSnap?: (index: number) => void;
 
 
     /**
-     * The callback that is called when the snapping animation starts
+     * Called when the snapping animation starts
      */
 
     onSnapStart?: (index: number) => void;
@@ -76,13 +76,13 @@ export interface CircleViewProps {
 
 
     /**
-     * The callback that is called when the user starts a gesture
+     * Called when the user starts a gesture
      */
 
     onGestureStart?: () => void;
 
     /**
-     * The callback that is called when the user ends a gesture
+     * Called when the user ends a gesture
      */
 
     onGestureEnd?: () => void;
@@ -102,7 +102,7 @@ export interface CircleViewProps {
     childContainerStyle?: any;
 
     /**
-     * The duration of the snapping animation
+     * The duration of the snapping animation in ms
      */
 
     snapDuration?: number;
@@ -114,6 +114,5 @@ export interface CircleViewProps {
      */
 
     animationConfig?: DecayConfig;
-
 
 }
