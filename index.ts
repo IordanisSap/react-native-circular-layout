@@ -1,3 +1,3 @@
-import CircleView from "./src/CircularLayout";
+import CircularView from "./src/CircularLayout";
 
-export default CircleView;
+export default CircularView ;
