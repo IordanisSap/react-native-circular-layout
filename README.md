@@ -9,9 +9,11 @@ It supports touch gesture rotation, animations, and includes a variety of extra 
 
 
 
-<img src="./.github/resources/open_close.gif" alt="open_close" width="210"/>
-<img src="./.github/resources/rotate_velocity.gif" alt="rotate_velocity" width="210"/>
-<img src="./.github/resources/rotate.gif" alt="rotate" width="210"/>
+<div style="display: flex; flex-direction: row;">
+  <img src="./.github/resources/open_close.gif" alt="open_close" width="210"/>
+  <img src="./.github/resources/rotate_velocity.gif" alt="rotate_velocity" width="210"/>
+  <img src="./.github/resources/rotate.gif" alt="rotate" width="210"/>
+</div>
 
 ## Table of Contents
 - [Installation](#installation)
