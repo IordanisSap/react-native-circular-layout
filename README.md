@@ -2,11 +2,11 @@ react-native-circular-layout
 =========================
 
 ![npm version](https://img.shields.io/npm/v/react-native-circular-layout)
-![build status](https://img.shields.io/travis/username/react-native-circular-layout)
 ![license](https://img.shields.io/github/license/username/react-native-circular-layout)
 
 A versatile React Native component that arranges its children in a circular or elliptical layout. <br>
 It supports touch gesture rotation, animations, and includes a variety of extra features.
+<video src="./.github/resources/open_close.mp4" width="300" />
 
 ## Table of Contents
 - [Installation](#installation)
