@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "module": "ES6",
+    "module": "commonjs",
     "target": "ES5",
     "lib": [
       "ES6",
@@ -13,11 +13,18 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
     "src/**/*",
     "index.tsx"
   ],
-  "extends": "expo/tsconfig.base"
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
 }
