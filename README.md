@@ -6,7 +6,11 @@ react-native-circular-layout
 
 A versatile React Native component that arranges its children in a circular or elliptical layout. <br>
 It supports touch gesture rotation, animations, and includes a variety of extra features.
-<video src="./.github/resources/open_close.mp4" width="300" />
+
+![open_close](./.github/resources/open_close.gif)
+![rotate](./.github/resources/rotate_velocity.gif)
+![rotate](./.github/resources/rotate.gif)
+
 
 ## Table of Contents
 - [Installation](#installation)
