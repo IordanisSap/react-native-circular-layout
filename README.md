@@ -22,7 +22,6 @@ It supports touch gesture rotation, animations, and includes a variety of extra 
 - [Props](#props)
 
 ## Installation
--------
 
 With npm:
 
@@ -36,13 +35,12 @@ With yarn:
 yarn add @iordanissap/react-native-circular-layout
 ```
 
-IMPORTANT: This library uses react-native-gesture-handler. To ensure proper functionality, you need to wrap your app's root component with `GestureHandlerRootView`. 
+<b>IMPORTANT</b>: This library uses react-native-gesture-handler. To ensure proper functionality, you need to wrap your app's root component with `GestureHandlerRootView`. 
 
 
 
 
 ## Dependencies
------------------
 
 ``` json
 {
@@ -63,7 +61,7 @@ import { SafeAreaView, View } from 'react-native';
 import CircularView from 'react-native-circular-layout';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-export default function Minimal() {
+export default function Example() {
 
     const colors = ['#D2691E', '#FFA500', '#FF69B4', '#FFB6C1', '#8B4513'];
     return (
