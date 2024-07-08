@@ -1,7 +1,7 @@
 react-native-circular-layout
 =========================
 
-![npm version](https://img.shields.io/npm/v/react-native-circular-layout)
+[![npm version](https://img.shields.io/npm/v/react-native-circular-layout)](https://www.npmjs.com/package/react-native-circular-layout)
 ![license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue)](https://github.com/IordanisSap/react-native-circular-layout/)
 
