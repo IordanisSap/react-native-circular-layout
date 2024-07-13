@@ -32,8 +32,7 @@ const CircularView = (props: CircleViewProps) => {
     }, [numberOfChildren]);
 
 
-    console.log('rerendering', index);
-    
+
     const createPanGesture = (theta: number, sizeX: SharedValue<number>, sizeY: SharedValue<number>) => {
         return Gesture.Pan()
             .onStart((e) => {
@@ -146,9 +145,9 @@ const CircularView = (props: CircleViewProps) => {
     const thetas = useMemo(() => {
         const thetas = [];
         for (let i = 0; i < numberOfChildren; i++) {
-            thetas.push((2 * Math.PI * i) / numberOfChildren + (index * Math.PI * 2 / numberOfChildren));
+            thetas.push((2 * Math.PI * i) / numberOfChildren);
         }
-        console.log('thetas', thetas);
+        console.log(thetas);
         return thetas;
     }, [numberOfChildren]);
 
@@ -157,7 +156,7 @@ const CircularView = (props: CircleViewProps) => {
         if (index === -1) return;
         const invertedIndex = index ? snapPoints.length - index : 0;
         const snapPoint = snapPoints[invertedIndex] + Math.round((angle.value - snapPoints[invertedIndex]) / (2 * Math.PI)) * 2 * Math.PI;
-	
+
         angle.value = withTiming(snapPoint, { duration: snapDuration }, () => {
             if (onSnap) {
                 runOnJS(onSnap)(index);
