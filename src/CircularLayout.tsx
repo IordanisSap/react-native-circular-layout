@@ -46,7 +46,7 @@ const CircularView = (props: CircleViewProps) => {
                 const touchX = elementX + e.x;
                 const touchY = elementY + e.y;
 
-                initialTouchAngle.value = Math.atan2(touchY - centerY.value, touchX - centerX.value) - angle.value;
+                initialTouchAngle.value = Math.atan2((touchY - centerY.value)*radiusXValue, (touchX - centerX.value)*radiusYValue) - angle.value;
             })
             .onUpdate((e) => {
                 if (!scrollEnabled) return;
@@ -59,7 +59,7 @@ const CircularView = (props: CircleViewProps) => {
                 const touchX = elementX + e.x;
                 const touchY = elementY + e.y;
 
-                const currentTouchAngle = Math.atan2(touchY - centerY.value, touchX - centerX.value);
+                const currentTouchAngle = Math.atan2((touchY - centerY.value)*radiusXValue, (touchX - centerX.value)*radiusYValue);
 
                 angle.value = currentTouchAngle - initialTouchAngle.value;
             })
@@ -147,7 +147,6 @@ const CircularView = (props: CircleViewProps) => {
         for (let i = 0; i < numberOfChildren; i++) {
             thetas.push((2 * Math.PI * i) / numberOfChildren);
         }
-        console.log(thetas);
         return thetas;
     }, [numberOfChildren]);
 
