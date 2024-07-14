@@ -67,8 +67,8 @@ export default function Complex() {
 
     }
     else {
-      radiusX.value = withTiming(150, { duration: 600, })
-      radiusY.value = withTiming(150, { duration: 600, })
+      radiusX.value = withTiming(getRandomInt(120,180), { duration: 600, })
+      radiusY.value = withTiming(getRandomInt(120,180), { duration: 600, })
       childOpacity.value = withTiming(1, { duration: 600, })
       isExpanded.value = true;
       indexAnim.value = prevIndex.current;
@@ -183,3 +183,10 @@ const styles = StyleSheet.create({
     height: 130,
   },
 });
+
+
+function getRandomInt(min, max) {
+  const minCeiled = Math.ceil(min);
+  const maxFloored = Math.floor(max);
+  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+}
