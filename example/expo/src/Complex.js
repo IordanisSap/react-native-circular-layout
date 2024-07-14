@@ -2,7 +2,7 @@ import { Image, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-na
 import CircularView from 'react-native-circular-layout';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
-import { memo, useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -30,7 +30,7 @@ export default function Complex() {
     }
   });
 
-  const childComponents = [
+  const childComponentsImages = [
     { src: require('../assets/burger.png') },
     { src: require('../assets/pizza.png') },
     { src: require('../assets/cocktail.png') },
@@ -41,8 +41,7 @@ export default function Complex() {
   const colors = ['#D2691E', '#FFA500', '#FF69B4', '#FFB6C1', '#8B4513'];
 
 
-  const memoizedChildComponents = useMemo(() =>
-    childComponents.map((item, ind) => (
+  const childComponents = childComponentsImages.map((item, ind) => (
       <ChildComponent
         key={ind}
         style={childStyle}
@@ -51,9 +50,7 @@ export default function Complex() {
         myIndex={ind}
         color={colors[ind]}
       />
-    )),
-    [childComponents, childStyle, colors, indexAnim]
-  );
+    ))
 
   const onCentralPress = () => {
     if (isExpanded.value) {
@@ -95,7 +92,7 @@ export default function Complex() {
               onGestureStart={() => indexAnim.value = -1}
               onGestureEnd={() => console.log('Gesture End')}
             >
-              {memoizedChildComponents}
+              {childComponents}
             </CircularView>
           </View>
           {/* </ScrollView> */}
@@ -128,7 +125,7 @@ const CentralComponent = ({ onPress }) => {
 };
 
 
-const ChildComponent = memo(({ style, src, indexAnim, myIndex, color }) => {
+const ChildComponent = ({ style, src, indexAnim, myIndex, color }) => {
   const animatedStyle = useAnimatedStyle(() => {
     const selected = indexAnim.value === myIndex;
     return {
@@ -151,7 +148,7 @@ const ChildComponent = memo(({ style, src, indexAnim, myIndex, color }) => {
       <Image source={src} style={{ width: 40, height: 40 }} resizeMode='contain' />
     </AnimatedPressable>
   );
-});
+};
 
 const styles = StyleSheet.create({
   container: {
